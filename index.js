@@ -31,15 +31,15 @@ module.exports = function (port, method = 'tcp') {
       })
   }
 
-	const protocol = method === 'udp' ? 'udp' : 'tcp';
+  const protocol = method === 'udp' ? 'udp' : 'tcp';
 
   return sh(`lsof -i ${protocol}:${port}`)
     .then(res => {
       const { stdout } = res
-      if (!stdout) return res
-			if (!stdout.includes(protocol.toUpperCase()) {
-				return Promise.reject(new Error('No process running on port'));
-			}
+      if (!stdout) return res;
+      if (!stdout.includes(protocol.toUpperCase())) {
+	return Promise.reject(new Error('No process running on port'));
+      }
       return sh(
         `kill -9 $(lsof -t -i ${protocol}:${port})`
       )
